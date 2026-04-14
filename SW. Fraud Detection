@@ -1,0 +1,12 @@
+    public int fraudDetection(int threshold, int[] trans , int k) {
+        int l = 0, count = 0, maxLen = 0;
+        for(int r = 0;r < trans.length; r++) {
+            if(threshold < trans[r]) count++;
+            while(count > k) {
+                if(threshold < trans[l]) count--;
+                l++;
+            }
+            maxLen = Math.max(maxLen, r- l+1);
+        }
+        return maxLen;
+    }
