@@ -1,0 +1,22 @@
+    public int serverLoadStability(int[] load, int k) {
+        int l = 0, maxLen = 0;
+        Deque<Integer> maxq = new ArrayDeque<>();
+        Deque<Integer> minq = new ArrayDeque<>();
+        for (int r = 0; r < load.length; r++) {
+            while(!maxq.isEmpty() && load[maxq.peekLast()] < load[r]) {
+                maxq.pollLast();
+            }
+            maxq.addLast(r);
+            while(!minq.isEmpty() && load[minq.peekLast()] > load[r]) {
+                minq.pollLast();
+            }
+            minq.addLast(r);
+            while(!maxq.isEmpty() && !minq.isEmpty() && Math.abs(load[minq.peekFirst()] - load[maxq.peekFirst()]) > k) {
+                if(!minq.isEmpty() && minq.peekFirst() == l) minq.pollFirst();
+                if(!maxq.isEmpty() && maxq.peekFirst() == l) maxq.pollFirst();
+                l++;
+            }
+            maxLen = Math.max(maxLen, r - l+1);
+        }
+        return maxLen;
+    }
