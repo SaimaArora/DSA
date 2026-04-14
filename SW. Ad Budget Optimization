@@ -1,0 +1,14 @@
+public int adBudgetOptimization(int[] engagement, int[] cost, int k) {
+        int left  =0, ans = 0, currCost = 0, score = 0;
+        for(int r = 0;r < engagement.length; r++) {
+            currCost +=cost[r];
+            score+=engagement[r];
+            while(left < cost.length && currCost > k) {
+                currCost-=cost[left];
+                score-=engagement[left];
+                left++;
+            }
+            ans = Math.max(ans, score);
+        }
+        return ans;
+    }
