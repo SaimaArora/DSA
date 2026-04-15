@@ -1,0 +1,30 @@
+
+    public boolean canCarry(int capacity, int d, int[] weight) {
+        int sum = 0, day = 1;
+        for(int i = 0; i < weight.length; i++) {
+            if(weight[i] > capacity) return false;
+            if(sum + weight[i] <= capacity) {
+                sum+=weight[i];
+            } else {
+                day++;
+                sum = weight[i];
+            }
+        }
+        return day <= d;
+    }
+    public int packageShipSys(int d, int[] weight) {
+        int maxCap = 0, sum = 0;
+        for(int wei:weight) {
+            sum+=wei;
+            maxCap = Math.max(maxCap, wei);
+        }
+        int low = maxCap, high = sum, ans = 0;
+        while(low <= high) {
+            int mid = low+(high - low)/2;
+            if(canCarry(mid, d, weight)) {
+                high = mid-1;
+                ans = mid;
+            } else low = mid+1;
+        }
+        return ans;
+    }
