@@ -1,0 +1,18 @@
+    public int revenueSpikeDetection(int[] revenue, int target) {
+        int n = revenue.length;
+        int[] prefix  = new int[n];
+        if(n ==0) return 0;
+        HashMap<Integer, Integer> map = new HashMap<>();
+        prefix[0] = revenue[0];
+        map.put(0, 1);
+        for(int i = 1; i < n; i++) {
+            prefix[i] = prefix[i-1] + revenue[i];
+        }
+        int count = 0;
+        for(int sum:prefix) {
+            int rem = sum - target;
+            if(map.containsKey(rem)) count+=map.get(rem);
+            map.put(sum, map.getOrDefault(sum, 0) +1);
+        }
+        return count;
+    }
