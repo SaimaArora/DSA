@@ -1,0 +1,17 @@
+    public int popularityScore(int[] rating) {
+        int c1 = 0, c2 = 0, c3 = 0, maxLen = 0;
+        HashMap<String, Integer> map  =  new HashMap<>();
+        map.put("0,0", -1);
+        for(int i = 0; i < rating.length; i++) {
+            if(rating[i] == 1) c1++;
+            else if(rating[i] == 2) c2++;
+            else c3++;
+            int d1 = c1 - c2, d2 = c2 -c3;
+            String curr = d1+","+d2;
+            if(map.containsKey(curr)) {
+                maxLen = Math.max(maxLen, i - map.get(curr));
+            }
+            else map.put(curr, i);
+        }
+        return maxLen;
+    }
