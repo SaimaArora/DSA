@@ -1,0 +1,32 @@
+
+    private boolean checkSumIntoK(int limit, int[] bitrate, int k) {
+        int sum = 0, kVal = 1;
+        for(int i = 0; i < bitrate.length; i++) {
+            if(sum + bitrate[i] <= limit){
+                sum+=bitrate[i];
+            } else {
+                sum = bitrate[i];
+                kVal++;
+            }
+        }
+        return kVal <= k;
+    }
+    public int rateStreamingMinSum(int[] bitrate, int k) {
+        int n = bitrate.length, sum = 0, maxRate = bitrate[0];
+        for(int rate: bitrate) {
+            sum+=rate;
+            maxRate = Math.max(maxRate, rate);
+        }
+        int low = maxRate, high = sum, ans = sum;
+        while(low <= high) {
+            int mid = low+(high - low)/2;
+            if(checkSumIntoK(mid, bitrate, k)) {
+                high = mid - 1;
+                ans = mid;
+            } else {
+                low = mid+1;
+            }
+        }
+        return ans;
+
+    }
