@@ -1,0 +1,32 @@
+
+
+    private boolean canCompute(int m, int x, int[] jobs) {
+        int i = 0, n = jobs.length, sum = 0;
+        m--;
+        while(i < n) {
+            if(jobs[i] > x) return false;
+            if(sum+jobs[i] <= x) sum+=jobs[i];
+            else{
+                m--;
+                sum = jobs[i];
+            }
+            i++;
+        }
+        return m >= 0;
+    }
+    public int serverJobs(int[] jobs, int m) {
+        int minCom = Integer.MAX_VALUE, n = jobs.length, sum = 0;
+        for(int i = 0; i < n; i++){
+            sum+=jobs[i];
+            minCom = Math.max(minCom, jobs[i]);
+        }
+        int low = minCom, high = sum, ans = -1;
+        while(low <= high) {
+            int mid = low+(high - low)/2;
+            if(canCompute(m, mid, jobs)) {
+                ans = mid;
+                high = mid-1;
+            } else low = mid+1;
+        }
+        return ans;
+    }
