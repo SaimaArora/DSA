@@ -1,0 +1,31 @@
+
+    private boolean canAllocateBooks(int[] pages, int x, int students) {
+        int sum = 0, b = 1;
+        for(int p:pages) {
+            if(sum + p <= x) {
+                sum +=p;
+            } else {
+                sum = p;
+                b++;
+            }
+        }
+        return b<=students;
+    }
+    public int allocateBooks(int[] pages, int students) {
+        int n = pages.length, sum = 0, maxPage = 0;
+        for(int p:pages) {
+            sum+=p;
+            maxPage = Math.max(maxPage, p);
+        }
+        int low = maxPage, high = sum, ans = 0;
+        while(low <= high) {
+            int mid = low+(high - low)/2;
+            if(canAllocateBooks(pages, mid, students)) {
+                high = mid-1;
+                ans = mid;
+            } else {
+                low = mid+1;
+            }
+        }
+        return ans;
+    }
