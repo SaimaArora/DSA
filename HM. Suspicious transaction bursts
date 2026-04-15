@@ -1,0 +1,18 @@
+    //If the remainder of the cumulative sum at day 10 is 2,
+    // and the remainder was also 2 at day 3,
+    // then the total transactions added between day 4 and day 10
+    // must have been a multiple of $K$ to keep that remainder the same.
+    public int susTransactionBursts(int[] transaction, int k) {
+        int count = 0, sum = 0, n = transaction.length;
+        HashMap<Integer, Integer> map = new HashMap<>();
+        map.put(0, 1);
+        for(int i = 0; i < n; i++) {
+            sum+=transaction[i];
+            int rem = ((sum%k)+k)%k;
+            if(map.containsKey(rem)) {
+                count+=map.get(rem);
+            }
+            map.put(rem, map.getOrDefault(sum, 0) +1);
+        }
+        return count;
+    }
