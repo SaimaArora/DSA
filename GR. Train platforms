@@ -1,0 +1,16 @@
+    public int numberOfPlatforms(int[] arrival, int[] departure) {
+        Arrays.sort(arrival);
+        Arrays.sort(departure);
+        int n = arrival.length, s = 0, e = 0, count = 0, ans = 0;
+        while(s < n) {
+            if(arrival[s] <departure[e]) {
+                s++;
+                count++;
+            } else if(arrival[s] >= departure[e]) {
+                count--;
+                e++;
+            }
+            ans = Math.max(ans, count);
+        }
+        return ans;
+    }
