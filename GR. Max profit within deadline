@@ -1,0 +1,32 @@
+
+    class Task{
+        int dead, pro;
+        Task(int d, int p) {
+            dead = d;
+            pro = p;
+        }
+    }
+    public int taskScheduleWithDeadlines(int[] deadline, int[] profits) {
+        int n = deadline.length;
+        Task[] tasks = new Task[n];
+        for(int i = 0; i <n; i++) {
+            tasks[i] = new Task(deadline[i], profits[i]);
+        }
+        Arrays.sort(tasks, (a, b)-> a.dead - b.dead);
+        int res = 0;
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+
+        for(int i = 0; i < n; i++) {
+            if(tasks[i].dead < pq.size()) {
+                pq.offer(tasks[i].pro);
+            }
+            else if (!pq.isEmpty() && pq.peek() < tasks[i].pro) {
+                pq.poll();
+                pq.offer(tasks[i].pro);
+            }
+        }
+        while(!pq.isEmpty()) {
+            res+=pq.poll();
+        }
+        return res;
+    }
