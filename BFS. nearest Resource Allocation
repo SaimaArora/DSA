@@ -1,0 +1,27 @@
+    //o-empty, 1-resource
+    public int[][] nearestResourceAllocation(int[][] grid) {
+        int n = grid.length, m = grid[0].length;
+        Queue<int[]> q = new LinkedList<>();
+        int[][] dist = new int[n][m];
+        for(int[] r: dist) Arrays.fill(r, -1);
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(grid[i][j] == 1){ q.offer(new int[]{i, j});
+                dist[i][j] = 0; }
+            }
+        }
+        while(!q.isEmpty()) {
+            int[] row = {0, 0, -1, 1};
+            int[] col = {1, -1 ,0, 0};
+            int[] curr = q.poll();
+            int r = curr[0], c = curr[1], currDist = 0;
+            for(int i = 0; i < 4; i++) {
+                int newr = row[i] + r, newc = col[i]+c;
+                if(newr >= 0 && newc>=0 && newr < n && newc < m && ( dist[newr][newc] == -1 || dist[newr][newc] > dist[r][c] +1)) {
+                    dist[newr][newc] = dist[r][c] + 1;
+                    q.offer(new int[]{newr, newc});
+                }
+            }
+        }
+        return dist;
+    }
