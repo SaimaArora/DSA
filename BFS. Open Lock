@@ -1,0 +1,32 @@
+    public int openLock(String[] deadend, String target) {
+        Set<String> dead = new HashSet<>(Arrays.asList(deadend));
+        Set<String> visited = new HashSet<>();
+        Queue<String> q = new LinkedList<>();
+        String st = "0000";
+        if(dead.contains(st)) return -1;
+        if(st.equals(target)) return 0;
+        int move = 0;
+        q.offer(st);
+        visited.add(st);
+        while(!q.isEmpty()) {
+            int size = q.size();
+            for(int i = 0; i < size; i++) {
+                String curr = q.poll();
+                for(int k = 0; k < 4; k++) {
+                    int[] dir = new int[]{-1, 1};
+                    for(int d : dir) {
+                        char[] chars = curr.toCharArray();
+                        int dig = ((chars[k] - '0') +d +10)%10;
+                        chars[k] = (char)(dig+'0');
+                        String next = new String (chars);
+                        if(!dead.contains(next) && !visited.contains(next)) {
+                            visited.add(next);
+                            q.offer(next);
+                        }
+                    }
+                }
+            }
+            move++;
+        }
+        return move;
+    }
