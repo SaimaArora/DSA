@@ -1,0 +1,31 @@
+class Solution {
+    
+    private boolean canFit(int dist, int[] stalls, int k) {
+        int last = stalls[0], cow = 1;
+        for(int i = 1; i < stalls.length; i++) {
+            if(stalls[i] - last >= dist) {
+                last = stalls[i];
+                cow++;
+            }
+            if(cow >= k) return true;
+        }
+        return false;
+    }
+    
+    public int aggressiveCows(int[] stalls, int k) {
+        // code here
+        int n = stalls.length, ans = 0;
+        Arrays.sort(stalls);
+        int low = 1, high = stalls[n - 1] - stalls[0];
+        while(low <= high) {
+            int mid = low+(high - low)/2;
+            if(canFit(mid, stalls, k)) {
+                ans = mid;
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return ans;
+    }
+}
