@@ -1,0 +1,42 @@
+
+    class Job{
+        int st, end, profit;
+        Job(int s, int e, int p) {
+            st = s;
+            end = e;
+            profit = p;
+        }
+    }
+    public void jobProfit(int[] start, int[] end, int[] profit) {
+        int n = start.length;
+        Job[] jobs = new Job[n];
+        for(int i = 0; i < n; i++) {
+            jobs[i] = new Job(start[i], end[i], profit[i]);
+        }
+        Arrays.sort(jobs, (a, b)-> a.end - b.end);
+        int[] dp = new int[n];
+        Arrays.fill(dp, -1);
+        memo(jobs, 0, dp);
+    }
+    private int findNextIndex(Job[] jobs, int i) {
+        int low = 0, high = i - 1, ans = -1;
+        while(low <= high) {
+            int mid = low+(high - low)/2;
+            if(jobs[mid].end <= jobs[i].st) {
+                ans = mid;
+                low = mid+1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return ans;
+    }
+    private int memo(Job[] jobs, int ind, int[] dp) {
+        if(ind < 0) return 0;
+        if(dp[ind] != -1) return dp[ind];
+        int notTake = memo(jobs, ind - 1, dp);
+        int take = jobs[ind].profit;
+        int next = findNextIndex(jobs, ind);
+        take+=memo(jobs, next, dp);
+        return dp[ind] = Math.max(take, notTake);
+    }
