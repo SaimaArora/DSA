@@ -1,0 +1,30 @@
+
+    public boolean canCompleteInD(int curr, int[] weight, int days) {
+        int d= 1, sum = 0, n = weight.length;
+        for(int i = 0; i <n; i++) {
+            if(sum + weight[i] <= curr) {
+                sum+=weight[i];
+            } else {
+                sum = weight[i];
+                d++;
+            }
+        }
+        return d <= days;
+    }
+    public int delOptimization(int[] weights, int days) {
+        int maxWei = 0, ans = 0;
+        for(int i = 0; i < weights.length; i++) {
+            maxWei += weights[i];
+        }
+        int low = 1, high = maxWei;
+        while(low <= high) {
+            int mid = low + (high - low) /2;
+            if(canCompleteInD(mid, weights, days)) {
+                high = mid - 1;
+                ans = mid;
+            } else {
+                low = mid+1;
+            }
+        }
+        return ans;
+    }
