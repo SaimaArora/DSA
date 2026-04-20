@@ -1,0 +1,14 @@
+
+    public int longestSessionWithKUsers(int[] id, int k) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int l = 0, maxLen = 0, n = id.length;
+        for(int i = 0; i < n; i++) {
+            map.put(id[i], map.getOrDefault(id[i], 0) + 1);
+            while(l < n && map.size() > k) {
+                map.put(id[l], map.getOrDefault(id[l], 0) - 1);
+                l++;
+            }
+            maxLen = Math.max(maxLen, i - l+1);
+        }
+        return maxLen;
+    }
