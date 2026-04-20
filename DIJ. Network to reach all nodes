@@ -1,0 +1,40 @@
+
+    class obj{
+        int u, v,w;
+        obj(int u, int v, int w) {
+            this.u = u;
+            this.v = v;
+            this.w = w;
+        }
+    }
+    public int networkDelay(int[][] times, int n) {
+        List<List<obj>> adj =  new ArrayList();
+        for(int i = 0; i < n; i++) {
+            adj.add(new ArrayList<>());
+        }
+        for(int i = 0; i < times.length; i++) {
+            int u = times[i][0], v = times[i][1], w = times[i][2];
+            adj.get(u).add(new obj(u, v, w));
+        }
+        int[] dist = new int[n+1];
+        dist[k] = 0;
+        PriorityQueue<int[]> pq = new PriorityQueue<>();
+        pq.offer(new int[]{k, 0});
+        while(!pq.isEmpty()) {
+            int[] curr = pq.poll();
+            int u = curr[0], d = curr[1];
+            for(obj nei : adj.get(u)) {
+                if(dist[u] + nei.w < dist[nei.v]) {
+                    dist[nei.v] = dist[u] + nei.w;
+                    pq.offer(new int[]{nei.v, dist[nei.v]});
+                }
+            }
+        }
+        int ans = 0;
+        Arrays.fill(dist, -1);
+        for(int i = 0; i < dist.length; i++) {
+            if(dist[i] == -1) return -1;
+            ans = Math.max(ans, dist[i]);
+        }
+        return ans;
+    }
